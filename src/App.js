@@ -37,6 +37,12 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  async function handleLogout(event) {
+    event.preventDefault();
+    window.localStorage.removeItem('loggedInUser');
+    setUser(null);
+  }
+
   if (user === null) {
     return (
       <>
@@ -72,6 +78,7 @@ const App = () => {
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
+      <button onClick={handleLogout}>Logout</button>
     </div>
   );
 };
