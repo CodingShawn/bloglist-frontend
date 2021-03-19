@@ -19,10 +19,19 @@ const App = () => {
       setUser(user);
       setUsername("");
       setPassword("");
+      window.localStorage.setItem('loggedInUser', JSON.stringify(user));
     } catch(exception) {
 
     }
   }
+
+  useEffect(() => {
+    const loggedInUserJSON = window.localStorage.getItem('loggedInUser');
+    if (loggedInUserJSON) {
+      const user = JSON.parse(loggedInUserJSON);
+      setUser(user);
+    }
+  }, [])
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
