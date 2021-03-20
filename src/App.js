@@ -25,7 +25,9 @@ const App = () => {
       setPassword("");
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedInUser", JSON.stringify(user));
-    } catch (exception) {}
+    } catch (exception) {
+      createNotification("Wrong username or password", true);
+    }
   }
 
   useEffect(() => {
@@ -59,6 +61,7 @@ const App = () => {
     return (
       <>
         <h1>Log in to application</h1>
+        <Notification text={notification} error={isError} />
         <form onSubmit={handleLogin}>
           <div>
             Username{" "}
