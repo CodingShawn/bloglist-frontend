@@ -1,13 +1,10 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
-import Notification from "./Notification";
 
-function AddBlog() {
+function AddBlog({ createNotification }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const [notification, setNotification] = useState(null);
-  const [isError, setIsError] = useState(false);
 
   async function handleCreateBlog(event) {
     event.preventDefault();
@@ -18,23 +15,15 @@ function AddBlog() {
     };
     blogService.create(newBlog);
     let notificationMessage = `A new blog \"${title}\" by ${author} was added`;
-    createNotification(notificationMessage);
+    createNotification(notificationMessage, false);
     setTitle("");
     setAuthor("");
     setUrl("");
   }
 
-  function createNotification(notificationMessage) {
-    setNotification(notificationMessage);
-    setIsError(false);
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  }
   return (
     <>
       <h2>Create New Blog</h2>
-      <Notification text={notification} error={isError}/>
       <form onSubmit={handleCreateBlog}>
         <div>
           Title:{" "}
