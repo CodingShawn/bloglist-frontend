@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AddBlog from "./components/AddBlog";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
@@ -58,6 +58,8 @@ const App = () => {
     }, 5000);
   }
 
+  const addBlogRef = useRef();
+
   if (user === null) {
     return (
       <>
@@ -93,8 +95,11 @@ const App = () => {
       <h2>blogs</h2>
       {user.username} logged in <button onClick={handleLogout}>Logout</button>
       <Notification text={notification} error={isError} />
-      <Togglable buttonLabel="Add new blog">
-        <AddBlog createNotification={createNotification} />
+      <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
+        <AddBlog
+          createNotification={createNotification}
+          toggleRef={addBlogRef}
+        />
       </Togglable>
       <section>
         {blogs.map((blog) => (

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-function AddBlog({ createNotification }) {
+function AddBlog({ createNotification, toggleRef }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -14,11 +14,12 @@ function AddBlog({ createNotification }) {
       url,
     };
     blogService.create(newBlog);
-    let notificationMessage = `A new blog \"${title}\" by ${author} was added`;
+    let notificationMessage = `A new blog "${title}" by ${author} was added`;
     createNotification(notificationMessage, false);
     setTitle("");
     setAuthor("");
     setUrl("");
+    toggleRef.current.toggleVisibility();
   }
 
   return (
