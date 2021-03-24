@@ -1,7 +1,15 @@
 import React from "react";
 import Togglable from "./Togglable";
+import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, updateBlogs }) => {
+
+  function handleLike() {
+    const blogObject = blog;
+    blogObject.likes++;
+    blogService.update(blogObject);
+    updateBlogs();
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -18,7 +26,7 @@ const Blog = ({ blog }) => {
     </div>
     <Togglable buttonLabel="View">
       <div>{blog.url}</div>
-      <div>likes: {blog.likes}<button>like</button></div>
+      <div>likes: {blog.likes}<button onClick={handleLike}>like</button></div>
       <div>{blog.author}</div>
     </Togglable>
   </div>
