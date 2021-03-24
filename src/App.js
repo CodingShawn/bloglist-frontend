@@ -41,7 +41,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    updateBlogs();
   }, []);
 
   async function handleLogout(event) {
@@ -56,6 +56,10 @@ const App = () => {
     setTimeout(() => {
       setNotification(null);
     }, 5000);
+  }
+
+  function updateBlogs() {
+    blogService.getAll().then((blogs) => setBlogs(blogs));
   }
 
   const addBlogRef = useRef();
@@ -99,6 +103,7 @@ const App = () => {
         <AddBlog
           createNotification={createNotification}
           toggleRef={addBlogRef}
+          updateBlogs={updateBlogs}
         />
       </Togglable>
       <section>

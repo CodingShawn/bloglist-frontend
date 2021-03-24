@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-function AddBlog({ createNotification, toggleRef }) {
+function AddBlog({ createNotification, toggleRef, updateBlogs }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -20,6 +20,7 @@ function AddBlog({ createNotification, toggleRef }) {
     setAuthor("");
     setUrl("");
     toggleRef.current.toggleVisibility();
+    updateBlogs();
   }
 
   return (
