@@ -7,14 +7,25 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
     const blogObject = blog;
     blogObject.likes++;
     blogService.update(blogObject);
-    updateBlogs();
+    updateBlogs(likeUpdateHelper);
   }
 
   function handleDeleteBlog() {
     if (window.confirm(`Do you want to delete ${blog.title}?`)) {
       blogService.deleteBlog(blog);
-      updateBlogs();
+      updateBlogs(deleteUpdateHelper);
     }
+  }
+
+  function likeUpdateHelper(blogs, setBlogs) {
+    blogService.getAll().then((blogs) => setBlogs(blogs));
+  }
+
+  function deleteUpdateHelper(blogs, setBlogs) {
+    const blogIndex = blogs.findIndex((arrayBlog) => arrayBlog.id === blog.id);
+    let newBlogs = [...blogs];
+    newBlogs.splice(blogIndex, 1);
+    setBlogs(newBlogs);
   }
 
   const blogStyle = {

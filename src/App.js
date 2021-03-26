@@ -41,7 +41,7 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    updateBlogs();
+    blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
   async function handleLogout(event) {
@@ -58,8 +58,10 @@ const App = () => {
     }, 5000);
   }
 
-  function updateBlogs() {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+  function updateBlogs(helperFunction, helperArgument) {
+    (function updateBlogHelper() {
+      helperFunction(blogs, setBlogs, helperArgument);
+    })();
   }
 
   const addBlogRef = useRef();
@@ -116,7 +118,12 @@ const App = () => {
       </Togglable>
       <section>
         {blogs.sort(blogSort).map((blog) => (
-          <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} isUserBlog={isUserBlog(blog)} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            updateBlogs={updateBlogs}
+            isUserBlog={isUserBlog(blog)}
+          />
         ))}
       </section>
     </div>

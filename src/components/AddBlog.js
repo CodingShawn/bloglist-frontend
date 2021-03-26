@@ -13,14 +13,19 @@ function AddBlog({ createNotification, toggleRef, updateBlogs }) {
       author,
       url,
     };
-    blogService.create(newBlog);
+    let returnedNewBlog = await blogService.create(newBlog);
     let notificationMessage = `A new blog "${title}" by ${author} was added`;
     createNotification(notificationMessage, false);
     setTitle("");
     setAuthor("");
     setUrl("");
     toggleRef.current.toggleVisibility();
-    updateBlogs();
+    updateBlogs(addNewBlogHelper, returnedNewBlog);
+  }
+
+  function addNewBlogHelper(blogs, setBlogs, newBlog) {
+    let newBlogs = blogs.concat(newBlog);
+    setBlogs(newBlogs);
   }
 
   return (
