@@ -64,6 +64,10 @@ const App = () => {
 
   const addBlogRef = useRef();
 
+  function blogSort(blogA, blogB) {
+    return blogB.likes - blogA.likes;
+  }
+
   if (user === null) {
     return (
       <>
@@ -107,7 +111,7 @@ const App = () => {
         />
       </Togglable>
       <section>
-        {blogs.map((blog) => (
+        {blogs.sort(blogSort).map((blog) => (
           <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} />
         ))}
       </section>
