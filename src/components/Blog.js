@@ -10,6 +10,13 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
     updateBlogs();
   }
 
+  function handleDeleteBlog() {
+    if (window.confirm(`Do you want to delete ${blog.title}?`)) {
+      blogService.deleteBlog(blog);
+      updateBlogs();
+    }
+  }
+
   const blogStyle = {
     paddingTop: 10,
     paddingBottom: 5,
@@ -17,7 +24,6 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
     border: "1px black solid",
     marginBottom: 5,
   };
-
 
   return (
     <div style={blogStyle}>
@@ -32,7 +38,7 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
         </div>
         <div>{blog.author}</div>
       </Togglable>
-      {isUserBlog && <button>Delete Blog</button>}
+      {isUserBlog && <button onClick={handleDeleteBlog}>Delete Blog</button>}
     </div>
   );
 };
