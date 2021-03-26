@@ -68,6 +68,10 @@ const App = () => {
     return blogB.likes - blogA.likes;
   }
 
+  function isUserBlog(blog) {
+    return user.username === blog.user.username;
+  }
+
   if (user === null) {
     return (
       <>
@@ -112,7 +116,7 @@ const App = () => {
       </Togglable>
       <section>
         {blogs.sort(blogSort).map((blog) => (
-          <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} />
+          <Blog key={blog.id} blog={blog} updateBlogs={updateBlogs} isUserBlog={isUserBlog(blog)} />
         ))}
       </section>
     </div>
