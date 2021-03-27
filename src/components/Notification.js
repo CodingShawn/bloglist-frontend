@@ -1,8 +1,10 @@
+import React from "react";
+
 function Notification({ text, error }) {
   if (text === null) {
     return null;
   }
-  
+
   let color = error ? "red" : "green";
   let style = {
     color: color,
