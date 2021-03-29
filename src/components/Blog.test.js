@@ -1,9 +1,10 @@
 import "@testing-library/jest-dom/extend-expect";
-import { render } from "@testing-library/react";
+import { render, fireEvent } from "@testing-library/react";
 import Blog from "./Blog";
 import React from "react";
 
-test("renders blog and shows only title and author and not url and likes", () => {
+describe("<Blog.>", () => {
+  let component, blogHeader, blogDetails;
   const blog = {
     title: "Jest",
     author: "Me",
@@ -11,14 +12,22 @@ test("renders blog and shows only title and author and not url and likes", () =>
     likes: 123,
   };
 
-  const component = render(<Blog blog={blog} />);
+  beforeEach(() => {
+    component = render(<Blog blog={blog} />);
+    blogHeader = component.container.querySelector(".blog-header");
+    blogDetails = component.container.querySelector(".togglable-content");
+  });
 
-  const blogHeader = component.container.querySelector(".blog-header");
-  expect(blogHeader).not.toHaveStyle("display: none");
+  test("renders blog and shows only title and author and not url and likes", () => {
+    expect(blogHeader).not.toHaveStyle("display: none");
 
-  const blogDetails = component.container.querySelector(".togglable-content");
-  expect(blogDetails).toHaveStyle("display: none");
+    expect(blogDetails).toHaveStyle("display: none");
+  });
 
+  test("clicking view button shows blog details", () => {
+    const viewButton = component.getByText("View");
+    fireEvent.click(viewButton);
+
+    expect(blogDetails).not.toHaveStyle("display: none");
+  });
 });
-
-
