@@ -14,7 +14,7 @@ describe("<Blog.>", () => {
 
   beforeEach(() => {
     mockHandler = jest.fn();
-    component = render(<Blog blog={blog} updateBlogs={mockHandler}/>);
+    component = render(<Blog blog={blog} updateBlogs={mockHandler} />);
     blogHeader = component.container.querySelector(".blog-header");
     blogDetails = component.container.querySelector(".togglable-content");
   });
@@ -39,7 +39,7 @@ describe("<Blog.>", () => {
     const likeButton = component.getByText("like");
     fireEvent.click(likeButton);
     fireEvent.click(likeButton);
-    
+
     expect(mockHandler.mock.calls).toHaveLength(2);
-  })
+  });
 });
