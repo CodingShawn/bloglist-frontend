@@ -15,7 +15,7 @@ function Notification({ text, error }) {
     padding: "5px",
   };
 
-  return <div style={style}>{text}</div>;
+  return <div className="notification" style={style}>{text}</div>;
 }
 
 export default Notification;
