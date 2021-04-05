@@ -58,11 +58,12 @@ function AddBlog({ createNotification, toggleRef, updateBlogs }) {
           <input
             type="text"
             name="url"
+            id="url"
             value={url}
             onChange={({ target }) => setUrl(target.value)}
           ></input>
         </div>
-        <button type="submit">Create blog</button>
+        <button className="create-blog-button" type="submit">Create blog</button>
       </form>
     </>
   );

@@ -39,7 +39,7 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
   return (
     <div style={blogStyle}>
       <div className="blog-header">
-        {blog.title} {blog.author}
+        {blog.title} by {blog.author}
       </div>
       <Togglable buttonLabel="View">
         <div>{blog.url}</div>

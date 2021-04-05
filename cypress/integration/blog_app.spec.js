@@ -34,4 +34,27 @@ describe("Blog app", function () {
         .should("have.css", "border-color", "rgb(255, 0, 0)");
     });
   });
+
+  describe.only("When logged in", function () {
+    beforeEach(function () {
+      cy.request("POST", "http://localhost:3003/api/login", {
+        username: "Admin Test",
+        password: "password",
+      }).then((response) => {
+        localStorage.setItem("loggedInUser", JSON.stringify(response.body));
+        cy.visit("http://localhost:3000");
+      });
+    });
+
+    it("A blog can be created", function () {
+      cy.contains("Add new blog").click();
+      cy.get("#title").type("Test blog");
+      cy.get("#author").type("Test Author");
+      cy.get("#url").type("www.testlink.com");
+      cy.get(".create-blog-button").click();
+      // eslint-disable-next-line quotes
+      cy.contains('A new blog "Test blog" by Test Author was added');
+      cy.contains("Test blog by Test Author");
+    });
+  });
 });
