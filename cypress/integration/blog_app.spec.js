@@ -42,8 +42,22 @@ describe("Blog app", function () {
         password: "password",
       }).then((response) => {
         localStorage.setItem("loggedInUser", JSON.stringify(response.body));
-        cy.visit("http://localhost:3000");
+        let token = response.body.token;
+        let request = {
+          title: "First test blog",
+          author: "First test author",
+          url: "www.test.com"
+        }
+        cy.request({
+          method: "POST",
+          url: "http://localhost:3003/api/blogs",
+          headers: {
+            Authorization: `bearer ${token}`
+          },
+          body: request
+        })
       });
+      cy.visit("http://localhost:3000");
     });
 
     it("A blog can be created", function () {
