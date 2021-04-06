@@ -46,16 +46,16 @@ describe("Blog app", function () {
         let request = {
           title: "First test blog",
           author: "First test author",
-          url: "www.test.com"
-        }
+          url: "www.test.com",
+        };
         cy.request({
           method: "POST",
           url: "http://localhost:3003/api/blogs",
           headers: {
-            Authorization: `bearer ${token}`
+            Authorization: `bearer ${token}`,
           },
-          body: request
-        })
+          body: request,
+        });
       });
       cy.visit("http://localhost:3000");
     });
@@ -71,11 +71,18 @@ describe("Blog app", function () {
       cy.contains("Test blog by Test Author");
     });
 
-    it("Blog can be liked", function() {
+    it("Blog can be liked", function () {
       cy.contains("View").click();
       cy.get(".like-button").parent().should("contain", "likes: 0");
       cy.get(".like-button").click();
       cy.get(".like-button").parent().should("contain", "likes: 1");
-    })
+    });
+
+    it("Blog can be deleted by user who created it", function () {
+      cy.get(".blog-header");
+      cy.contains("View").click();
+      cy.get(".delete-button").click();
+      cy.get("#blog-header").should("not.exist");
+    });
   });
 });

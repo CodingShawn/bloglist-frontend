@@ -49,7 +49,7 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
         </div>
         <div>{blog.author}</div>
       </Togglable>
-      {isUserBlog && <button onClick={handleDeleteBlog}>Delete Blog</button>}
+      {isUserBlog && <button className="delete-button" onClick={handleDeleteBlog}>Delete Blog</button>}
     </div>
   );
 };
