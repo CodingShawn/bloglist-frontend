@@ -70,5 +70,12 @@ describe("Blog app", function () {
       cy.contains('A new blog "Test blog" by Test Author was added');
       cy.contains("Test blog by Test Author");
     });
+
+    it("Blog can be liked", function() {
+      cy.contains("View").click();
+      cy.get(".like-button").parent().should("contain", "likes: 0");
+      cy.get(".like-button").click();
+      cy.get(".like-button").parent().should("contain", "likes: 1");
+    })
   });
 });
