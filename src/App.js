@@ -109,7 +109,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {user.username} logged in <button onClick={handleLogout}>Logout</button>
+      {user.username} logged in <button className="logout-button" onClick={handleLogout}>Logout</button>
       <Notification text={notification} error={isError} />
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
         <AddBlog

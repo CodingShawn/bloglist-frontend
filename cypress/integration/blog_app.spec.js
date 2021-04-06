@@ -6,6 +6,11 @@ describe("Blog app", function () {
       password: "password",
       name: "Tester",
     });
+    cy.request("POST", "http://localhost:3003/api/users", {
+      username: "Admin 2",
+      password: "password",
+      name: "Tester 2",
+    });
     cy.visit("http://localhost:3000");
   });
 
@@ -83,6 +88,19 @@ describe("Blog app", function () {
       cy.contains("View").click();
       cy.get(".delete-button").click();
       cy.get("#blog-header").should("not.exist");
+    });
+
+    it.only("Blog cannot be delete by user who did not create it", function () {
+      cy.get(".logout-button").click();
+      cy.request("POST", "http://localhost:3003/api/login", {
+        username: "Admin 2",
+        password: "password",
+      }).then((response) => {
+        localStorage.setItem("loggedInUser", JSON.stringify(response.body));
+        cy.visit("http://localhost:3000");
+        cy.contains("View").click();
+        cy.get(".delete-button").should("not.exist");
+      });
     });
   });
 });
