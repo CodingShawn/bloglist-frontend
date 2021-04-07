@@ -40,7 +40,7 @@ describe("Blog app", function () {
     });
   });
 
-  describe.only("When logged in", function () {
+  describe("When logged in", function () {
     beforeEach(function () {
       cy.request("POST", "http://localhost:3003/api/login", {
         username: "Admin Test",
@@ -90,7 +90,7 @@ describe("Blog app", function () {
       cy.get("#blog-header").should("not.exist");
     });
 
-    it.only("Blog cannot be delete by user who did not create it", function () {
+    it("Blog cannot be delete by user who did not create it", function () {
       cy.get(".logout-button").click();
       cy.request("POST", "http://localhost:3003/api/login", {
         username: "Admin 2",
@@ -101,6 +101,59 @@ describe("Blog app", function () {
         cy.contains("View").click();
         cy.get(".delete-button").should("not.exist");
       });
+    });
+  });
+
+  describe("Blogs are ordered by likes", function () {
+    beforeEach(function () {
+      cy.request("POST", "http://localhost:3003/api/login", {
+        username: "Admin Test",
+        password: "password",
+      }).then((response) => {
+        localStorage.setItem("loggedInUser", JSON.stringify(response.body));
+        let token = response.body.token;
+        let request = {
+          title: "First test blog",
+          author: "First test author",
+          url: "www.test.com",
+        };
+        cy.request({
+          method: "POST",
+          url: "http://localhost:3003/api/blogs",
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+          body: request,
+        });
+
+        let request2 = {
+          title: "Second test blog",
+          author: "Second test author",
+          url: "www.test.com",
+          likes: 1,
+        };
+        cy.request({
+          method: "POST",
+          url: "http://localhost:3003/api/blogs",
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+          body: request2,
+        });
+      });
+      cy.visit("http://localhost:3000");
+    });
+
+    it("Blogs are ordered by likes", function () {
+      //Assert that second test blog with 1 like is first
+      cy.get(".blogs").children().first().contains("Second test blog");
+      cy.get(".blogs").children().last().contains("View").click();
+
+      //Like First test blog twice
+      cy.get(".blogs").children().last().contains("like").click().click();
+
+      //Assert that First test blog with 2 likes is now first
+      cy.get(".blogs").children().first().contains("First test blog");
     });
   });
 });

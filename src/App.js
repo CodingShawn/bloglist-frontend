@@ -118,7 +118,7 @@ const App = () => {
           updateBlogs={updateBlogs}
         />
       </Togglable>
-      <section>
+      <section className="blogs">
         {blogs.sort(blogSort).map((blog) => (
           <Blog
             key={blog.id}
