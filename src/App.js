@@ -5,14 +5,16 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
+import { useDispatch } from "react-redux";
+import { createNotification } from "./reducers/notificationReducer";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState(null);
-  const [isError, setIsError] = useState(false);
+
+  const dispatch = useDispatch();
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -27,7 +29,7 @@ const App = () => {
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedInUser", JSON.stringify(user));
     } catch (exception) {
-      createNotification("Wrong username or password", true);
+      dispatch(createNotification("Wrong username or password", true));
     }
   }
 
@@ -50,14 +52,6 @@ const App = () => {
     setUser(null);
   }
 
-  function createNotification(notificationMessage, isMessageError) {
-    setNotification(notificationMessage);
-    setIsError(isMessageError);
-    setTimeout(() => {
-      setNotification(null);
-    }, 5000);
-  }
-
   function updateBlogs(helperFunction, helperArgument) {
     (function updateBlogHelper() {
       helperFunction(blogs, setBlogs, helperArgument);
@@ -78,7 +72,7 @@ const App = () => {
     return (
       <>
         <h1>Log in to application</h1>
-        <Notification text={notification} error={isError} />
+        <Notification />
         <form onSubmit={handleLogin}>
           <div>
             Username{" "}
@@ -100,7 +94,9 @@ const App = () => {
               onChange={({ target }) => setPassword(target.value)}
             />
           </div>
-          <button id="login-button" type="submit">Login</button>
+          <button id="login-button" type="submit">
+            Login
+          </button>
         </form>
       </>
     );
@@ -109,14 +105,13 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
-      {user.username} logged in <button className="logout-button" onClick={handleLogout}>Logout</button>
-      <Notification text={notification} error={isError} />
+      {user.username} logged in{" "}
+      <button className="logout-button" onClick={handleLogout}>
+        Logout
+      </button>
+      <Notification />
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
-        <AddBlog
-          createNotification={createNotification}
-          toggleRef={addBlogRef}
-          updateBlogs={updateBlogs}
-        />
+        <AddBlog toggleRef={addBlogRef} updateBlogs={updateBlogs} />
       </Togglable>
       <section className="blogs">
         {blogs.sort(blogSort).map((blog) => (

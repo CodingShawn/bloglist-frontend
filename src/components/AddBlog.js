@@ -1,11 +1,15 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 import React from "react";
+import { createNotification } from "../reducers/notificationReducer";
+import { useDispatch } from "react-redux";
 
-function AddBlog({ createNotification, toggleRef, updateBlogs }) {
+function AddBlog({ toggleRef, updateBlogs }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  const dispatch = useDispatch();
 
   async function handleCreateBlog(event) {
     event.preventDefault();
@@ -16,7 +20,7 @@ function AddBlog({ createNotification, toggleRef, updateBlogs }) {
     };
     let returnedNewBlog = await blogService.create(newBlog);
     let notificationMessage = `A new blog "${title}" by ${author} was added`;
-    createNotification(notificationMessage, false);
+    dispatch(createNotification(notificationMessage, false));
     setTitle("");
     setAuthor("");
     setUrl("");
@@ -63,7 +67,9 @@ function AddBlog({ createNotification, toggleRef, updateBlogs }) {
             onChange={({ target }) => setUrl(target.value)}
           ></input>
         </div>
-        <button className="create-blog-button" type="submit">Create blog</button>
+        <button className="create-blog-button" type="submit">
+          Create blog
+        </button>
       </form>
     </>
   );
