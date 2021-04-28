@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearNotification } from "../reducers/notificationReducer";
 
-function Notification({ text, error }) {
-  if (text === null) {
+function Notification() {
+  const notification = useSelector((state) => state);
+  let { text, error } = notification;
+  const dispatch = useDispatch();
+
+  function timer() {
+    return setTimeout(() => dispatch(clearNotification()), 5000);
+  }
+
+  useEffect(() => {
+    let removeTimer = timer();
+    return () => clearTimeout(removeTimer);
+  }, [notification]);
+
+  if (text === "") {
     return null;
   }
 
@@ -15,7 +30,11 @@ function Notification({ text, error }) {
     padding: "5px",
   };
 
-  return <div className="notification" style={style}>{text}</div>;
+  return (
+    <div className="notification" style={style}>
+      {text}
+    </div>
+  );
 }
 
 export default Notification;
