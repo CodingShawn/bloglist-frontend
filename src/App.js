@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import AddBlog from "./components/AddBlog";
-import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
 import { useDispatch } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
+import BlogList from "./components/BlogList";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -60,14 +60,6 @@ const App = () => {
 
   const addBlogRef = useRef();
 
-  function blogSort(blogA, blogB) {
-    return blogB.likes - blogA.likes;
-  }
-
-  function isUserBlog(blog) {
-    return user.username === blog.user.username;
-  }
-
   if (user === null) {
     return (
       <>
@@ -113,16 +105,7 @@ const App = () => {
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
         <AddBlog toggleRef={addBlogRef} updateBlogs={updateBlogs} />
       </Togglable>
-      <section className="blogs">
-        {blogs.sort(blogSort).map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            updateBlogs={updateBlogs}
-            isUserBlog={isUserBlog(blog)}
-          />
-        ))}
-      </section>
+      <BlogList blogs={blogs} user={user} updateBlogs={updateBlogs}/>
     </div>
   );
 };
