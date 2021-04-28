@@ -7,6 +7,7 @@ import Togglable from "./components/Togglable";
 import { useDispatch } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
+import { initializeBlogs } from "./reducers/blogReducer";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,6 +16,10 @@ const App = () => {
   const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initializeBlogs());
+  }, []);
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -105,7 +110,7 @@ const App = () => {
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
         <AddBlog toggleRef={addBlogRef} updateBlogs={updateBlogs} />
       </Togglable>
-      <BlogList blogs={blogs} user={user} updateBlogs={updateBlogs}/>
+      <BlogList user={user} updateBlogs={updateBlogs} />
     </div>
   );
 };

@@ -1,7 +1,10 @@
 import Blog from "./Blog";
 import React from "react";
+import { useSelector } from "react-redux";
 
 function BlogList(props) {
+  const blogs = useSelector((state) => state.blogs);
+
   function blogSort(blogA, blogB) {
     return blogB.likes - blogA.likes;
   }
@@ -12,7 +15,7 @@ function BlogList(props) {
 
   return (
     <section className="blogs">
-      {props.blogs.sort(blogSort).map((blog) => (
+      {blogs.sort(blogSort).map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
