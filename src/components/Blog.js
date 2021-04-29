@@ -1,10 +1,9 @@
 import React from "react";
 import Togglable from "./Togglable";
-import blogService from "../services/blogs";
 import { useDispatch } from "react-redux";
-import { updateBlog } from "../reducers/blogReducer";
+import { updateBlog, deleteBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, updateBlogs, isUserBlog }) => {
+const Blog = ({ blog, isUserBlog }) => {
   const dispatch = useDispatch();
 
   function handleLike() {
@@ -15,16 +14,8 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
 
   function handleDeleteBlog() {
     if (window.confirm(`Do you want to delete ${blog.title}?`)) {
-      blogService.deleteBlog(blog);
-      updateBlogs(deleteUpdateHelper);
+      dispatch(deleteBlog(blog));
     }
-  }
-
-  function deleteUpdateHelper(blogs, setBlogs) {
-    const blogIndex = blogs.findIndex((arrayBlog) => arrayBlog.id === blog.id);
-    let newBlogs = [...blogs];
-    newBlogs.splice(blogIndex, 1);
-    setBlogs(newBlogs);
   }
 
   const blogStyle = {

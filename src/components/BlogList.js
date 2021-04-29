@@ -19,7 +19,6 @@ function BlogList(props) {
         <Blog
           key={blog.id}
           blog={blog}
-          updateBlogs={props.updateBlogs}
           isUserBlog={isUserBlog(blog)}
         />
       ))}

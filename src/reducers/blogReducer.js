@@ -10,7 +10,11 @@ function reducer(state = initialState, action) {
     case "CREATE-BLOG":
       return [...state, action.data];
     case "UPDATE-BLOG":
-      return state.map((blog) => blog.id === action.data.id ? action.data : blog)
+      return state.map((blog) =>
+        blog.id === action.data.id ? action.data : blog
+      );
+    case "DELETE-BLOG":
+      return state.filter((blog) => blog.id !== action.data.id);
     default:
       return state;
   }
@@ -42,6 +46,16 @@ export function updateBlog(blog) {
     dispatch({
       type: "UPDATE-BLOG",
       data: updatedBlog,
+    });
+  };
+}
+
+export function deleteBlog(blog) {
+  return async function (dispatch) {
+    let deletedBlog = await blogServices.deleteBlog(blog);
+    dispatch({
+      type: "DELETE-BLOG",
+      data: deletedBlog,
     });
   };
 }
