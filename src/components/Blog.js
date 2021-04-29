@@ -1,13 +1,16 @@
 import React from "react";
 import Togglable from "./Togglable";
 import blogService from "../services/blogs";
+import { useDispatch } from "react-redux";
+import { updateBlog } from "../reducers/blogReducer";
 
 const Blog = ({ blog, updateBlogs, isUserBlog }) => {
+  const dispatch = useDispatch();
+
   function handleLike() {
     const blogObject = blog;
     blogObject.likes++;
-    blogService.update(blogObject);
-    updateBlogs(likeUpdateHelper);
+    dispatch(updateBlog(blogObject));
   }
 
   function handleDeleteBlog() {
@@ -15,10 +18,6 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
       blogService.deleteBlog(blog);
       updateBlogs(deleteUpdateHelper);
     }
-  }
-
-  function likeUpdateHelper(blogs, setBlogs) {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
   }
 
   function deleteUpdateHelper(blogs, setBlogs) {
@@ -45,11 +44,17 @@ const Blog = ({ blog, updateBlogs, isUserBlog }) => {
         <div>{blog.url}</div>
         <div>
           likes: {blog.likes}
-          <button className="like-button" onClick={handleLike}>like</button>
+          <button className="like-button" onClick={handleLike}>
+            like
+          </button>
         </div>
         <div>{blog.author}</div>
       </Togglable>
-      {isUserBlog && <button className="delete-button" onClick={handleDeleteBlog}>Delete Blog</button>}
+      {isUserBlog && (
+        <button className="delete-button" onClick={handleDeleteBlog}>
+          Delete Blog
+        </button>
+      )}
     </div>
   );
 };
