@@ -108,7 +108,7 @@ const App = () => {
       </button>
       <Notification />
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
-        <AddBlog toggleRef={addBlogRef} updateBlogs={updateBlogs} />
+        <AddBlog toggleRef={addBlogRef} />
       </Togglable>
       <BlogList user={user} updateBlogs={updateBlogs} />
     </div>

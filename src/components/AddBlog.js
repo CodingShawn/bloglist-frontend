@@ -1,10 +1,10 @@
 import { useState } from "react";
-import blogService from "../services/blogs";
 import React from "react";
 import { createNotification } from "../reducers/notificationReducer";
 import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
 
-function AddBlog({ toggleRef, updateBlogs }) {
+function AddBlog({ toggleRef }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -18,19 +18,13 @@ function AddBlog({ toggleRef, updateBlogs }) {
       author,
       url,
     };
-    let returnedNewBlog = await blogService.create(newBlog);
+    dispatch(createBlog(newBlog));
     let notificationMessage = `A new blog "${title}" by ${author} was added`;
     dispatch(createNotification(notificationMessage, false));
     setTitle("");
     setAuthor("");
     setUrl("");
     toggleRef.current.toggleVisibility();
-    updateBlogs(addNewBlogHelper, returnedNewBlog);
-  }
-
-  function addNewBlogHelper(blogs, setBlogs, newBlog) {
-    let newBlogs = blogs.concat(newBlog);
-    setBlogs(newBlogs);
   }
 
   return (
