@@ -10,7 +10,6 @@ import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -47,20 +46,10 @@ const App = () => {
     }
   }, []);
 
-  useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
-  }, []);
-
   async function handleLogout(event) {
     event.preventDefault();
     window.localStorage.removeItem("loggedInUser");
     setUser(null);
-  }
-
-  function updateBlogs(helperFunction, helperArgument) {
-    (function updateBlogHelper() {
-      helperFunction(blogs, setBlogs, helperArgument);
-    })();
   }
 
   const addBlogRef = useRef();
@@ -110,7 +99,7 @@ const App = () => {
       <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
         <AddBlog toggleRef={addBlogRef} />
       </Togglable>
-      <BlogList user={user} updateBlogs={updateBlogs} />
+      <BlogList user={user} />
     </div>
   );
 };
