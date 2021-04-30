@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 import AddBlog from "./components/AddBlog";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Notification from "./components/Notification";
 import Togglable from "./components/Togglable";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
+import { login, logout } from "./reducers/loginReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
 
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -22,16 +22,10 @@ const App = () => {
 
   async function handleLogin(event) {
     event.preventDefault();
+    setUsername("");
+    setPassword("");
     try {
-      const user = await loginService.login({
-        username,
-        password,
-      });
-      setUser(user);
-      setUsername("");
-      setPassword("");
-      blogService.setToken(user.token);
-      window.localStorage.setItem("loggedInUser", JSON.stringify(user));
+      dispatch(login({ username, password }));
     } catch (exception) {
       dispatch(createNotification("Wrong username or password", true));
     }
@@ -41,7 +35,6 @@ const App = () => {
     const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
     if (loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON);
-      setUser(user);
       blogService.setToken(user.token);
     }
   }, []);
@@ -49,7 +42,7 @@ const App = () => {
   async function handleLogout(event) {
     event.preventDefault();
     window.localStorage.removeItem("loggedInUser");
-    setUser(null);
+    logout();
   }
 
   const addBlogRef = useRef();
