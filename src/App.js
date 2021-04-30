@@ -8,6 +8,7 @@ import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { login, logout, persistLogin } from "./reducers/loginReducer";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -89,10 +90,19 @@ const App = () => {
         Logout
       </button>
       <Notification />
-      <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
-        <AddBlog toggleRef={addBlogRef} />
-      </Togglable>
-      <BlogList user={user} />
+      <Router>
+        <Switch>
+          <Route path="/users">
+            blah
+          </Route>
+          <Route path="/">
+            <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
+              <AddBlog toggleRef={addBlogRef} />
+            </Togglable>
+            <BlogList user={user} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 };
