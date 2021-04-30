@@ -42,8 +42,7 @@ const App = () => {
 
   async function handleLogout(event) {
     event.preventDefault();
-    window.localStorage.removeItem("loggedInUser");
-    logout();
+    dispatch(logout());
   }
 
   const addBlogRef = useRef();

@@ -39,6 +39,7 @@ export function login(credentials) {
 }
 
 export function logout() {
+  window.localStorage.removeItem("loggedInUser");
   return async function (dispatch) {
     dispatch({
       type: "LOGOUT",
