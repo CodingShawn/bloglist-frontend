@@ -6,6 +6,8 @@ const initialState = null;
 
 function reducer(state = initialState, action) {
   switch (action.type) {
+    case "PERSIST":
+      return action.data;
     case "LOGIN":
       return action.data;
     case "LOGOUT":
@@ -13,6 +15,15 @@ function reducer(state = initialState, action) {
     default:
       return state;
   }
+}
+
+export function persistLogin(user) {
+  return async function (dispatch) {
+    dispatch({
+      type: "PERSIST",
+      data: user,
+    });
+  };
 }
 
 export function login(credentials) {

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
-import { login, logout } from "./reducers/loginReducer";
+import { login, logout, persistLogin } from "./reducers/loginReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -35,6 +35,7 @@ const App = () => {
     const loggedInUserJSON = window.localStorage.getItem("loggedInUser");
     if (loggedInUserJSON) {
       const user = JSON.parse(loggedInUserJSON);
+      dispatch(persistLogin(user));
       blogService.setToken(user.token);
     }
   }, []);
