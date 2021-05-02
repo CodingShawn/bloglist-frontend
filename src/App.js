@@ -10,16 +10,19 @@ import { initializeBlogs } from "./reducers/blogReducer";
 import { login, logout, persistLogin } from "./reducers/loginReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Users from "./components/Users";
+import User from "./components/User";
+import { initializeUsers } from "./reducers/userReducer";
 
 const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.login);
 
   useEffect(() => {
     dispatch(initializeBlogs());
+    dispatch(initializeUsers());
   }, []);
 
   async function handleLogin(event) {
@@ -93,6 +96,9 @@ const App = () => {
       <Notification />
       <Router>
         <Switch>
+          <Route path="/users/:id">
+            <User user={user} />
+          </Route>
           <Route path="/users">
             <Users />
           </Route>
