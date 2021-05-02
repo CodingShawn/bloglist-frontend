@@ -9,6 +9,7 @@ import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { login, logout, persistLogin } from "./reducers/loginReducer";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Users from "./components/Users";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -93,7 +94,7 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/users">
-            blah
+            <Users />
           </Route>
           <Route path="/">
             <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
