@@ -37,6 +37,10 @@ const Blog = () => {
     marginBottom: 5,
   };
 
+  if (!blog) {
+    return null;
+  }
+
   return (
     <div style={blogStyle}>
       <h2 className="blog-header">
