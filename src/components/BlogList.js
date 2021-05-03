@@ -1,26 +1,18 @@
-import Blog from "./Blog";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-function BlogList(props) {
+function BlogList() {
   const blogs = useSelector((state) => state.blogs);
 
   function blogSort(blogA, blogB) {
     return blogB.likes - blogA.likes;
   }
 
-  function isUserBlog(blog) {
-    return props.user.username === blog.user.username;
-  }
-
   return (
     <section className="blogs">
       {blogs.sort(blogSort).map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          isUserBlog={isUserBlog(blog)}
-        />
+        <Link key={blog.id} to={`/blogs/${blog.id}`}>{blog.title}</Link>
       ))}
     </section>
   );
