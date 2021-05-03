@@ -1,5 +1,4 @@
 import React from "react";
-import Togglable from "./Togglable";
 import { useDispatch } from "react-redux";
 import { updateBlog, deleteBlog } from "../reducers/blogReducer";
 
@@ -28,19 +27,17 @@ const Blog = ({ blog, isUserBlog }) => {
 
   return (
     <div style={blogStyle}>
-      <div className="blog-header">
+      <h2 className="blog-header">
         {blog.title} by {blog.author}
+      </h2>
+      <div>{blog.url}</div>
+      <div>
+        likes: {blog.likes}
+        <button className="like-button" onClick={handleLike}>
+          like
+        </button>
       </div>
-      <Togglable buttonLabel="View">
-        <div>{blog.url}</div>
-        <div>
-          likes: {blog.likes}
-          <button className="like-button" onClick={handleLike}>
-            like
-          </button>
-        </div>
-        <div>{blog.author}</div>
-      </Togglable>
+      <div>Added by {blog.author}</div>
       {isUserBlog && (
         <button className="delete-button" onClick={handleDeleteBlog}>
           Delete Blog
