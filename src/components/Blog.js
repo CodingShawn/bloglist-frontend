@@ -1,8 +1,14 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { updateBlog, deleteBlog } from "../reducers/blogReducer";
 
-const Blog = ({ blog, isUserBlog }) => {
+const Blog = () => {
+  const id = useParams().id;
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === id)
+  );
+  const user = useSelector((state) => state.login);
   const dispatch = useDispatch();
 
   function handleLike() {
@@ -15,6 +21,12 @@ const Blog = ({ blog, isUserBlog }) => {
     if (window.confirm(`Do you want to delete ${blog.title}?`)) {
       dispatch(deleteBlog(blog));
     }
+  }
+
+  function isUserBlog() {
+    if (user) {
+      return user.username === blog.user.username;
+    } else return false;
   }
 
   const blogStyle = {
@@ -38,7 +50,7 @@ const Blog = ({ blog, isUserBlog }) => {
         </button>
       </div>
       <div>Added by {blog.author}</div>
-      {isUserBlog && (
+      {isUserBlog() && (
         <button className="delete-button" onClick={handleDeleteBlog}>
           Delete Blog
         </button>
