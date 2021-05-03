@@ -1,5 +1,5 @@
 import axios from "axios";
-const baseUrl = "api/login";
+const baseUrl = "/api/login";
 
 async function login(credentials) {
   let response = await axios.post(baseUrl, credentials);

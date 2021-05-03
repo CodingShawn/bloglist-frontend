@@ -8,11 +8,11 @@ import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
 import { login, logout, persistLogin } from "./reducers/loginReducer";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
 import Users from "./components/Users";
 import User from "./components/User";
 import { initializeUsers } from "./reducers/userReducer";
-import Blog from "./components/Blog"
+import Blog from "./components/Blog";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -89,31 +89,41 @@ const App = () => {
 
   return (
     <div>
-      <h2>blogs</h2>
-      {user.username} logged in{" "}
-      <button className="logout-button" onClick={handleLogout}>
-        Logout
-      </button>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Blogs</Link>
+          </li>
+          <li>
+            <Link to="/users">Users</Link>
+          </li>
+          <li>{user.username} logged in </li>
+          <li>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <h1>Blogs App</h1>
       <Notification />
-      <Router>
-        <Switch>
-          <Route path="/users/:id">
-            <User user={user} />
-          </Route>
-          <Route path="/users">
-            <Users />
-          </Route>
-          <Route path="/blogs/:id">
-            <Blog/>
-          </Route>
-          <Route path="/">
-            <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
-              <AddBlog toggleRef={addBlogRef} />
-            </Togglable>
-            <BlogList />
-          </Route>
-        </Switch>
-      </Router>
+      <Switch>
+        <Route path="/users/:id">
+          <User user={user} />
+        </Route>
+        <Route path="/users">
+          <Users />
+        </Route>
+        <Route path="/blogs/:id">
+          <Blog />
+        </Route>
+        <Route path="/">
+          <Togglable buttonLabel="Add new blog" ref={addBlogRef}>
+            <AddBlog toggleRef={addBlogRef} />
+          </Togglable>
+          <BlogList />
+        </Route>
+      </Switch>
     </div>
   );
 };
