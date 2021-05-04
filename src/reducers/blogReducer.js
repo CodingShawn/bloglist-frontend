@@ -15,6 +15,10 @@ function reducer(state = initialState, action) {
       );
     case "DELETE-BLOG":
       return state.filter((blog) => blog.id !== action.data.id);
+    case "COMMENT-BLOG":
+      return state.map((blog) =>
+        blog.id === action.data.id ? action.data : blog
+      );
     default:
       return state;
   }
@@ -56,6 +60,16 @@ export function deleteBlog(blog) {
     dispatch({
       type: "DELETE-BLOG",
       data: deletedBlog,
+    });
+  };
+}
+
+export function commentBlog(blog, comment) {
+  return async function (dispatch) {
+    let commentedBlog = await blogServices.commentBlog(blog, comment);
+    dispatch({
+      type: "COMMENT-BLOG",
+      data: commentedBlog,
     });
   };
 }

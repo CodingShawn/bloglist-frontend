@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { updateBlog, deleteBlog } from "../reducers/blogReducer";
+import { updateBlog, deleteBlog, commentBlog } from "../reducers/blogReducer";
 
 const Blog = () => {
   const id = useParams().id;
@@ -21,6 +22,12 @@ const Blog = () => {
     if (window.confirm(`Do you want to delete ${blog.title}?`)) {
       dispatch(deleteBlog(blog));
     }
+  }
+
+  function handleAddComment(event) {
+    event.preventDefault();
+    let comment = event.target.comment.value;
+    dispatch(commentBlog(blog, { comments: comment }));
   }
 
   function isUserBlog() {
@@ -56,6 +63,10 @@ const Blog = () => {
       <div>
         <div>Added by {blog.author}</div>
         <h3>Comments</h3>
+        <form onSubmit={handleAddComment}>
+          <input type="text" name="comment"></input>
+          <button type="submit">Add comment</button>
+        </form>
         <ul>
           {blog.comments.map((comment, index) => (
             <li key={index}>{comment}</li>
