@@ -1,4 +1,5 @@
 import React from "react";
+import { ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -10,11 +11,13 @@ function BlogList() {
   }
 
   return (
-    <section className="blogs">
+    <ListGroup className="blogs">
       {blogs.sort(blogSort).map((blog) => (
-        <Link key={blog.id} to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        <ListGroup.Item key={blog.id}>
+          <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+        </ListGroup.Item>
       ))}
-    </section>
+    </ListGroup>
   );
 }
 
