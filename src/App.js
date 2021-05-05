@@ -7,12 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { createNotification } from "./reducers/notificationReducer";
 import BlogList from "./components/BlogList";
 import { initializeBlogs } from "./reducers/blogReducer";
-import { login, logout, persistLogin } from "./reducers/loginReducer";
-import { Switch, Route, Link } from "react-router-dom";
+import { login, persistLogin } from "./reducers/loginReducer";
+import { Switch, Route } from "react-router-dom";
 import Users from "./components/Users";
 import User from "./components/User";
 import { initializeUsers } from "./reducers/userReducer";
+import { logout } from "./reducers/loginReducer";
 import Blog from "./components/Blog";
+import Navbar from "./components/Nav";
+import { Row, Col, Button } from "react-bootstrap";
 
 const App = () => {
   const [username, setUsername] = useState("");
@@ -88,24 +91,23 @@ const App = () => {
   }
 
   return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Blogs</Link>
-          </li>
-          <li>
-            <Link to="/users">Users</Link>
-          </li>
-          <li>{user.username} logged in </li>
-          <li>
-            <button className="logout-button" onClick={handleLogout}>
-              Logout
-            </button>
-          </li>
-        </ul>
-      </nav>
-      <h1>Blogs App</h1>
+    <div className="container">
+      <Navbar />
+      <Row className="align-items-center justify-content-between">
+        <Col md={4}>
+          {" "}
+          <h1>Blogs App</h1>
+        </Col>
+        <Col md={{ span: 2, offset: 6 }}>
+          <div style={{ fontWeight: 700, fontSize: "18px" }}>
+            {user.username} logged in
+          </div>
+          <Button className="logout-button" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Col>
+      </Row>
+
       <Notification />
       <Switch>
         <Route path="/users/:id">
